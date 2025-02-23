@@ -20,7 +20,7 @@ Modelis skirtas objektų aptikimui, konkrečiai – piniginių sumų atpažinimu
 
 
 Technologija ir našumas:
-Puslapyje nurodyta, kad naudojama YOLO-NAS (Accurate) architektūra. Modelis pasižymi labai aukškais našumo rodikliais –
+Puslapyje nurodyta, kad naudojama YOLO-NAS (Accurate) architektūra. Modelis pasižymi labai aukškais našumo rodikliais:
 
 ```
 mAP (vidutinis tikslumas): 99.1%
@@ -31,7 +31,13 @@ Recall (atgavimo rodiklis): 98.2%
 # Kaip Naudoti
 
 Paleidimas:
-Paleiskite aplikaciją naudojant pvz., Uvicorn:
+
+Paleiskite komandą reikalingų paketų atsisiuntimui:
+```bash
+pip install -r requirements.txt
+```
+
+Paleiskite aplikaciją naudojant Uvicorn paketą:
 ```bash
 uvicorn main:app --reload
 ```
