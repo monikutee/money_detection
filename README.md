@@ -149,8 +149,6 @@ https://huggingface.co/spaces/monikutee/money_detection
 
 - Pirmą karta modelis buvo mokomas 3h valandas, antrą - 9h, tačiau norimas rezultatas nepasiektas. Reikia daugiau laiko hiperparametrų pasirinkimui, treniravimui ir stebėjimui.
 
-- Buvo bandyta padeploint į render visą api, tačiau nemokamoje versijoje trūksta resursų 'Ran out of memory (used over 512MB) while running your code.'. Dėl to buvo priimtas sprendimas patalpinti į hugging face.
-
 
 
 
