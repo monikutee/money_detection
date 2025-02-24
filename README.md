@@ -135,6 +135,8 @@ HTTP antraštėse pateiktus aptiktų banknotų (bill_count) ir monetų (coin_cou
 
 - Pirmą karta modelis buvo mokomas 3h valandas, antrą - 9h, tačiau norimas rezultatas nepasiektas. Reikia daugiau laiko hiperparametrų pasirinkimui, treniravimui ir stebėjimui.
 
+- Buvo bandyta padeploint į render visa api, tačiau nemokamoje versijoje trūksta resursų 'Ran out of memory (used over 512MB) while running your code.'. Dėl to buvo priimtas sprendimas patalpinti į hugging face.
+
 
 
 
