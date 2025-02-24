@@ -99,6 +99,8 @@ Norėdami patikrinti modelio veikimą su konkrečiu paveikslėliu (default imama
 python money_detection.py --image image.jpg
 ```
 
+Rezultatas: Anotuotas paveiksliukas annotated_image.jpg esantis aplankale
+
 **API naudojimas**
 Paleiskite API serverį:
 
@@ -149,6 +151,9 @@ https://huggingface.co/spaces/monikutee/money_detection
 
 - Pirmą karta modelis buvo mokomas 3h valandas, antrą - 9h, tačiau norimas rezultatas nepasiektas. Reikia daugiau laiko hiperparametrų pasirinkimui, treniravimui ir stebėjimui.
 
+
+# Kontaktai
+petrulevicmonika@gmail.com
 
 
 
