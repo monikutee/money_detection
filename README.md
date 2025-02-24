@@ -9,6 +9,9 @@
 
 Be pradinio datasetų turinio, į projektą buvo papildyta naujomis nuotraukomis bei kai kurių kategorijų anotacijos, nes kai kurių kategorijų trūko.
 
+Modelis taip pat patalpintas i huggingface su gradio interface:
+https://huggingface.co/spaces/monikutee/money_detection
+
 ## Turinio sąrašas
 
 - [Aprašymas](#aprašymas)

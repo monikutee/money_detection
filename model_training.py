@@ -71,20 +71,19 @@ def main():
 
     training_args = TrainingArguments(
         output_dir=output_dir,
-        num_train_epochs=5,  # Number of epochs (can increase if needed)
-        per_device_train_batch_size=4,  # Increase batch size if possible
+        num_train_epochs=5, 
+        per_device_train_batch_size=4, 
         per_device_eval_batch_size=4,
         eval_strategy="epoch",
         logging_steps=50,
         save_strategy="epoch",
         remove_unused_columns=False,
         
-        # ✅ Set custom learning rate
-        learning_rate=5e-5,  # Default is 5e-5; try reducing to 1e-5 if training is unstable
+        learning_rate=5e-5,  
         warmup_ratio=0.1,  # Warmup helps stabilize early training
         weight_decay=0.01,  # Regularization to prevent overfitting
-        gradient_accumulation_steps=2,  # If GPU memory is limited, accumulate gradients
-        max_grad_norm=1.0,  # Prevent exploding gradients
+        gradient_accumulation_steps=2, 
+        max_grad_norm=1.0,  
     )
 
     trainer = Trainer(
