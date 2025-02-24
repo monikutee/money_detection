@@ -59,6 +59,10 @@ Kiekvienam pradiniam paveikslėliui buvo sukurta 3 papildomos versijos, naudojan
 
 Papildomai kai kurių datasetų kategorijos buvo papildomai anotuojamos, nes pastebėta, kad kai kurių kategorijų trūksta.
 
+## Reikalavimai
+
+- Python
+
 ## Diegimo instrukcijos
 
 1. **Suklonuokite repozitoriją:**
@@ -88,7 +92,7 @@ pip install -r requirements.txt
 
 **Rankinis testavimas**
 
-Norėdami patikrinti modelio veikimą su konkrečiu paveikslėliu (reikia tureti python instaliavus kompiuteryje):
+Norėdami patikrinti modelio veikimą su konkrečiu paveikslėliu:
 
 
 ```bash
