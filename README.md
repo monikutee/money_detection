@@ -129,13 +129,13 @@ HTTP antraštėse pateiktus aptiktų banknotų (bill_count) ir monetų (coin_cou
     | Per trumpas treniravimas  | num_train_epochs=3 ->	num_train_epochs=5  | Užtikrinti, kad modelis išmoktų geriau  |
     | Per lėtas mokymasis pradžioje  | warmup_ratio=0.0	-> warmup_ratio=0.1  | 	Užtikrinti sklandžią pradžią  |
 
-- Exportuoti duomenys iš Roboflow turejo blogai surikiuotas kategorijas (label), ilgai užtruko debugginimas problemos dėl ko modelis keistai veikia.
+- Exportuoti duomenys iš Roboflow turejo blogai surikiuotas kategorijas (label), ilgai užtruko debugginimas problemos dėl ko modelis keistai veikia, buvo parašytas check_splits, kad įsitikinti ar anotacijų skaičius atitinka paveikslėlių kiekį.
 
 - Naudojamas git lfs nes modelio failai netelpa i githuba, ilgas procesas tiek modelio apmokymo tiek įkėlimo i githubą viso projekto.
 
 - Pirmą karta modelis buvo mokomas 3h valandas, antrą - 9h, tačiau norimas rezultatas nepasiektas. Reikia daugiau laiko hiperparametrų pasirinkimui, treniravimui ir stebėjimui.
 
-- Buvo bandyta padeploint į render visa api, tačiau nemokamoje versijoje trūksta resursų 'Ran out of memory (used over 512MB) while running your code.'. Dėl to buvo priimtas sprendimas patalpinti į hugging face.
+- Buvo bandyta padeploint į render visą api, tačiau nemokamoje versijoje trūksta resursų 'Ran out of memory (used over 512MB) while running your code.'. Dėl to buvo priimtas sprendimas patalpinti į hugging face.
 
 
 
