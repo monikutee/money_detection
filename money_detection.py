@@ -1,45 +1,23 @@
-from fastapi import FastAPI, File, UploadFile, HTTPException
-from fastapi.responses import StreamingResponse
-import io
-import numpy as np
+from annotate_image import run_inference
 import cv2
 
-from inference import get_model
-import supervision as sv
 
-# Inicializuojame FastAPI aplikaciją
-app = FastAPI()
+# Load image using OpenCV and convert from BGR to RGB
+image_file = "test.jpg"
+image = cv2.imread(image_file)
+if image is None:
+    raise ValueError(f"Could not read image {image_file}")
 
-# Įkeliame modelį
-model = get_model(model_id="geldbetrage-erkennen/2")
+annotated_image, bill_count, coin_count = run_inference(image)
 
-@app.post("/annotate")
-async def annotate_image(file: UploadFile = File(...)):
-    contents = await file.read()
-    
-    # Konvertuojame baitus į numpy masyvą ir dekoduojame paveikslėlį
-    nparr = np.frombuffer(contents, np.uint8)
-    image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-    
-    if image is None:
-        raise HTTPException(status_code=400, detail="Nepavyko atidaryti pateikto paveikslėlio.")
-    
-    # Vykdome inference
-    results = model.infer(image)[0]
-    detections = sv.Detections.from_inference(results)
-    
-    # Sukuriame anotavimo įrankius
-    bounding_box_annotator = sv.BoxAnnotator()
-    label_annotator = sv.LabelAnnotator()
-    
-    # Anotuojame paveikslėlį
-    annotated_image = bounding_box_annotator.annotate(scene=image, detections=detections)
-    annotated_image = label_annotator.annotate(scene=annotated_image, detections=detections)
-    
-    # Užkoduoime anotetą paveikslėlį į JPEG formatą
-    success, encoded_image = cv2.imencode('.jpg', annotated_image)
-    if not success:
-        raise HTTPException(status_code=500, detail="Nepavyko užkoduoti paveikslėlio.")
-    
-    # Grąžiname paveikslėlį kaip srautą
-    return StreamingResponse(io.BytesIO(encoded_image.tobytes()), media_type="image/jpeg")
+# Print stats
+print("Inference complete.")
+print(f"Total bills detected: {bill_count}")
+print(f"Total coins detected: {coin_count}")
+
+# Save the annotated image
+output_filename = "annotated_image.jpg"
+if cv2.imwrite(output_filename, annotated_image):
+    print(f"Annotated image saved as {output_filename}")
+else:
+    print("Error: Could not save the annotated image.")

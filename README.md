@@ -1,50 +1,101 @@
-# Annotavimo API su Deep Learning Modeliu
+# Euro Piniginės Aptikimo Projektas
 
-Šis projektas yra sukurta naudojant FastAPI ir leidžia atlikti paveikslėlių anotavimą, naudojant giliojo mokymosi modelį objektų aptikimui. API priima įkeltą paveikslėlį, vykdo inferenciją (objektų aptikimą), anotuoja aptiktus objektus (prideda ribojančius stačiakampius ir tekstines etiketes) bei grąžina anotetą paveikslėlį JPEG formatu.
+Šis projektas skirtas aptikti Euro pinigus (banknotus ir monetas) nuotraukose, naudojant YOLOS modelį ir Hugging Face Transformers biblioteką. Projekto metu buvo panaudoti du Roboflow datasetai:
 
-# Naudojamos Technologijos ir Bibliotekos
+- **Banknotų datasetas:**  
+  [Roboflow - Kupirom](https://universe.roboflow.com/capstone-cz0rh/eur-e3z3g)
+- **Monetų datasetas:**  
+  [Roboflow - Euro Coin Detector](https://universe.roboflow.com/aag-oqasj/euro-coin-detector/dataset/6)
 
-- FastAPI – modernus, greitas ir efektyvus web API kūrimo karkasas Python kalba.
-- OpenCV (cv2) – atvirojo kodo kompiuterinės vizijos biblioteka, naudojama paveikslėlių įkėlimui, dekodavimui ir apdorojimui.
-- NumPy – skaitmeninių duomenų apdorojimo biblioteka, naudojama baitų konvertavimui į masyvą.
-- StreamingResponse – FastAPI klasė, leidžianti srautiniu būdu grąžinti užkoduotus paveikslėlius.
-- Inference modelis – įkeltas su get_model funkcija iš inference modulio, skirtas atlikti paveikslėlio inferenciją.
-Supervision (sv) – biblioteka, naudojama aptikčių rezultatų apdorojimui bei paveikslėlių anotavimui (bounding box ir label).
+Be pradinio datasetų turinio, į projektą buvo papildyta naujomis nuotraukomis bei kai kurių kategorijų anotacijos, nes kai kurių kategorijų trūko.
 
-# Naudojamas modelis
+## Turinio sąrašas
 
-https://universe.roboflow.com/education-ubaoy/geldbetrage-erkennen/model/2
+- [Aprašymas](#aprašymas)
+- [Duomenų paruošimas](#duomenų-paruošimas)
+- [Duomenų augmentacija](#duomenų-augmentacija)
+- [Diegimo instrukcijos](#diegimo-instrukcijos)
+- [Naudojimo instrukcijos](#naudojimo-instrukcijos)
+  - [Rankinis testavimas](#rankinis-testavimas)
+  - [API naudojimas](#api-naudojimas)
+- [Iškilusios problemos](#iškilusios-problemos)
+- [Ateities patobulinimai](#ateities-patobulinimai)
 
-Modelio paskirtis:
-Modelis skirtas objektų aptikimui, konkrečiai – piniginių sumų atpažinimui iš paveikslėlių. Tai reiškia, kad jis geba aptikti ir lokalizuoti paveikslėlyje esančius objektus, susijusius su pinigais (pvz., banknotus, monetas ar jų skaitines reprezentacijas).
+## Aprašymas
 
+Šio projekto tikslas – sukurti sistemą, kuri aptiktų Euro banknotus ir monetas nuotraukose. Naudojami du skirtingi datasetai iš Roboflow, kuriuose yra nuotraukos su kupiuromis bei monetomis. Modelis aptinka ir suskaičiuoja aptiktus objektus, o rezultatai pateikiami tiek rankiniame būdu testuojant programą (išsaugotu apdorotu paveikslėliu), tiek per API (HTTP atsakyme grąžinant apdorotą paveikslėlį ir aptiktų banknotų bei monetų skaičių).
 
-Technologija ir našumas:
-Puslapyje nurodyta, kad naudojama YOLO-NAS (Accurate) architektūra. Modelis pasižymi labai aukškais našumo rodikliais:
+## Duomenų paruošimas
 
+Visiems šio projekto naudojami paveikslėliai buvo paruošti šiais žingsniais:
+- **Automatinis orientacijos nustatymas:** Paveikslėlių pikselių orientacija buvo automatiškai suderinta, kartu su EXIF duomenų pašalinimu.
+- **Resize:** Nuotraukos buvo ištemptos iki 1000x400 dydžio.
+- **Auto-contrast:** Taikytas kontrasto didinimas (contrast stretching), siekiant pagerinti vaizdo kokybę.
+
+## Duomenų augmentacija
+
+Kiekvienam pradiniam paveikslėliui buvo sukurta 3 papildomos versijos, naudojant šiuos transformacijos žingsnius:
+- **Horizontalus flip:** 50% tikimybė.
+- **Verticalus flip:** 50% tikimybė.
+- **90° pasukimai:** Lygiai vienoda tikimybė pasirinkti: neiškeitimą, pasukimą pagal laikrodžio rodyklę, prieš laikrodžio rodyklę arba apverstą variantą.
+- **Random crop:** Atsitiktinis paveikslėlio apkarpymas nuo 0% iki 22%.
+- **Random rotation:** Atsitiktinis pasukimas nuo -45° iki +45°.
+- **Random shear:** Atsitiktinis horizontalus ir vertikalus ištempimas nuo -11° iki +11°.
+- **Random exposure adjustment:** Atsitiktinis apšvietimo koregavimas nuo -12% iki +12%.
+- **Salt and pepper noise:** Triukšmas, paveikslėlio pikseliuose, pritaikytas 0,97% pikselių.
+
+Papildomai kai kurių datasetų kategorijos buvo papildomai anotavomos, nes pastebėta, kad kai kurių kategorijų trūksta.
+
+## Diegimo instrukcijos
+
+1. **Suklonuokite repozitoriją:**
+
+```bash
+git clone https://github.com/monikutee/money_detection.git
+cd money_detection
 ```
-mAP (vidutinis tikslumas): 99.1%
-Precision (tikslumas): 90.4%
-Recall (atgavimo rodiklis): 98.2%
+
+2. **Sukurkite virtualią aplinką ir aktyvuokite ją:**
+
+```bash
+python -m venv venv
+# Linux/MacOS:
+source venv/bin/activate
+# Windows:
+venv\Scripts\activate
 ```
 
-# Kaip Naudoti
+3. **Įdiekite priklausomybes:**
 
-Paleidimas:
-
-Paleiskite komandą reikalingų paketų atsisiuntimui:
 ```bash
 pip install -r requirements.txt
 ```
 
-Paleiskite aplikaciją naudojant Uvicorn paketą:
+## Naudojimo instrukcijos
+
+**Rankinis testavimas**
+
+Norėdami patikrinti modelio veikimą su konkrečiu paveikslėliu, paleiskite skriptą su --manual parametru:
+
 ```bash
-uvicorn main:app --reload
+python your_script.py --manual path/to/your/test.jpg --output annotated_image.jpg
+--manual – nurodo, kad paleidžiamas rankinis testavimas.
+--output – kelias, kur bus išsaugotas apdorotas paveikslėlis.
 ```
 
+**API naudojimas**
+Paleiskite API serverį:
 
-Užklausos siuntimas:
-Siųskite POST užklausą į /annotate endpointą, pridėdami paveikslėlį kaip failą.
+```bash
+python your_script.py --host 0.0.0.0 --port 8000
+```
 
-Rezultatas:
-Gaunamas anotuotas paveikslėlis JPEG formatu, kuriame pažymėtos aptiktos objektų ribos ir jų etiketės.
+Serveris bus pasiekiamas adresu: http://localhost:8000
+
+**Endpointas:** /detect
+
+Šis endpointas priima POST užklausas su paveikslėlių failais ir grąžina:
+
+Apdorotą paveikslėlį kaip JPEG.
+HTTP antraštėse pateiktus aptiktų banknotų (bill_count) ir monetų (coin_count) skaičius.
+
