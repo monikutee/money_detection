@@ -108,19 +108,19 @@ uvicorn api:app --reload
 
 Serveris bus pasiekiamas adresu: http://localhost:8000
 
-Paleisti index.html failą ir lokaliai pasinaudoti endpointu:
-
-```bash
-open ./index.html
-```
-
-
 **Endpointas:** /detect
 
 Šis endpointas priima POST užklausas su paveikslėlių failais ir grąžina:
 
 Apdorotą paveikslėlį kaip JPEG.
 HTTP antraštėse pateiktus aptiktų banknotų (bill_count) ir monetų (coin_count) skaičius.
+
+**Paleisti index.html failą ir lokaliai pasinaudoti endpointu:**
+
+```bash
+open ./index.html
+```
+
 
 **Paleistas modelis serveryje**
 
