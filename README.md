@@ -16,14 +16,24 @@ Be pradinio datasetų turinio, į projektą buvo papildyta naujomis nuotraukomis
 - [Duomenų augmentacija](#duomenų-augmentacija)
 - [Diegimo instrukcijos](#diegimo-instrukcijos)
 - [Naudojimo instrukcijos](#naudojimo-instrukcijos)
-  - [Rankinis testavimas](#rankinis-testavimas)
-  - [API naudojimas](#api-naudojimas)
 - [Iškilusios problemos](#iškilusios-problemos)
-- [Ateities patobulinimai](#ateities-patobulinimai)
 
 ## Aprašymas
 
 Šio projekto tikslas – sukurti sistemą, kuri aptiktų Euro banknotus ir monetas nuotraukose. Naudojami du skirtingi datasetai iš Roboflow, kuriuose yra nuotraukos su kupiuromis bei monetomis. Modelis aptinka ir suskaičiuoja aptiktus objektus, o rezultatai pateikiami tiek rankiniame būdu testuojant programą (išsaugotu apdorotu paveikslėliu), tiek per API (HTTP atsakyme grąžinant apdorotą paveikslėlį ir aptiktų banknotų bei monetų skaičių).
+
+
+YOLOS (You Only Look One-Series) yra transformerių pagrindu sukurtas objektų atpažinimo modelis, įkvėptas DETR (Detection Transformer) architektūros. Pagrindiniai bruožai:
+
+✅ Transformeriai vietoje CNN – skirtingai nei tradiciniai objektų aptikimo modeliai (pvz., Faster R-CNN ar YOLO), YOLOS naudoja transformerių dėmesio mechanizmą objektų aptikimui.
+
+✅ Vieno etapo modelis – YOLOS atlieka objektų aptikimą vienu veiksmu be papildomų region proposal etapų.
+
+✅ Puikiai apdoroja įvairaus dydžio objektus – transformerių dėka modelis gali pastebėti įvairaus dydžio objektus vienoje nuotraukoje.
+
+✅ Silpnesnis nei YOLOv8 – palyginus su naujesniais YOLO modeliais, YOLOS yra lėtesnis ir reikalauja daugiau skaičiavimo resursų, bet gali geriau veikti esant sudėtingoms scenoms.
+
+
 
 ## Duomenų paruošimas
 
@@ -44,7 +54,7 @@ Kiekvienam pradiniam paveikslėliui buvo sukurta 3 papildomos versijos, naudojan
 - **Random exposure adjustment:** Atsitiktinis apšvietimo koregavimas nuo -12% iki +12%.
 - **Salt and pepper noise:** Triukšmas, paveikslėlio pikseliuose, pritaikytas 0,97% pikselių.
 
-Papildomai kai kurių datasetų kategorijos buvo papildomai anotavomos, nes pastebėta, kad kai kurių kategorijų trūksta.
+Papildomai kai kurių datasetų kategorijos buvo papildomai anotuojamos, nes pastebėta, kad kai kurių kategorijų trūksta.
 
 ## Diegimo instrukcijos
 
@@ -98,4 +108,31 @@ Serveris bus pasiekiamas adresu: http://localhost:8000
 
 Apdorotą paveikslėlį kaip JPEG.
 HTTP antraštėse pateiktus aptiktų banknotų (bill_count) ir monetų (coin_count) skaičius.
+
+
+## Iškilusios problemos
+
+
+- Per pirmą treniravimą buvo pastebėta, kad modelis nepritaikė teisingai kategorijų arba neteisingai ženklino objektus. 
+
+    Pakeitimų santrauka:
+    
+    | Problema  | Pakeitimas | Tikslas
+    | ------------- | ------------- | ------------- |
+    | Per didelis mokymosi greitis  | learning_rate=5e-5 ->	learning_rate=1e-5  | Stabilizuoti mokymąsi |
+    | Nestabilūs gradientai  | max_grad_norm=None ->	max_grad_norm=1.0  | Išvengti didelių svorio pokyčių  |
+    | Overfitting | weight_decay=0.0	-> weight_decay=0.01 | Geresnis bendrasis modelio veikimas  |
+    | Mažos partijos sukelia triukšmą  | gradient_accumulation_steps=1 -> gradient_accumulation_steps=2  | Stabilizuoti treniravimą  |
+    | Per trumpas treniravimas  | num_train_epochs=3 ->	num_train_epochs=5  | Užtikrinti, kad modelis išmoktų geriau  |
+    | Per lėtas mokymasis pradžioje  | warmup_ratio=0.0	-> warmup_ratio=0.1  | 	Užtikrinti sklandžią pradžią  |
+
+- Exportuoti duomenys iš Roboflow turejo blogai surikiuotas kategorijas (label), ilgai užtruko debugginimas problemos dėl ko modelis keistai veikia.
+
+- Naudojamas git lfs nes modelio failai netelpa i githuba, ilgas procesas tiek modelio apmokymo tiek įkėlimo i githubą viso projekto.
+
+- Pirmą karta modelis buvo mokomas 3h valandas, antrą - 9h, tačiau norimas rezultatas nepasiektas. Reikia daugiau laiko hiperparametrų pasirinkimui, treniravimui ir stebėjimui.
+
+
+
+
 
