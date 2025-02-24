@@ -1,4 +1,4 @@
-# Euro Piniginės Aptikimo Projektas
+# Eur Aptikimo Projektas
 
 Šis projektas skirtas aptikti Euro pinigus (banknotus ir monetas) nuotraukose, naudojant YOLOS modelį ir Hugging Face Transformers biblioteką. Projekto metu buvo panaudoti du Roboflow datasetai:
 
