@@ -105,6 +105,13 @@ python your_script.py --host 0.0.0.0 --port 8000
 
 Serveris bus pasiekiamas adresu: http://localhost:8000
 
+Paleisti index.html failą ir lokaliai pasinaudoti endpointu:
+
+```bash
+open ./index.html
+```
+
+
 **Endpointas:** /detect
 
 Šis endpointas priima POST užklausas su paveikslėlių failais ir grąžina:
