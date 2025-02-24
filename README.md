@@ -88,19 +88,18 @@ pip install -r requirements.txt
 
 **Rankinis testavimas**
 
-Norėdami patikrinti modelio veikimą su konkrečiu paveikslėliu, paleiskite skriptą su --manual parametru:
+Norėdami patikrinti modelio veikimą su konkrečiu paveikslėliu (reikia tureti python instaliavus kompiuteryje):
+
 
 ```bash
-python your_script.py --manual path/to/your/test.jpg --output annotated_image.jpg
---manual – nurodo, kad paleidžiamas rankinis testavimas.
---output – kelias, kur bus išsaugotas apdorotas paveikslėlis.
+python money_detection.py --image image.jpg
 ```
 
 **API naudojimas**
 Paleiskite API serverį:
 
 ```bash
-python your_script.py --host 0.0.0.0 --port 8000
+uvicorn api:app --reload
 ```
 
 Serveris bus pasiekiamas adresu: http://localhost:8000
@@ -118,6 +117,10 @@ open ./index.html
 
 Apdorotą paveikslėlį kaip JPEG.
 HTTP antraštėse pateiktus aptiktų banknotų (bill_count) ir monetų (coin_count) skaičius.
+
+**Paleistas modelis serveryje**
+
+https://huggingface.co/spaces/monikutee/money_detection
 
 
 ## Iškilusios problemos
