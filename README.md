@@ -92,7 +92,7 @@ pip install -r requirements.txt
 
 **Rankinis testavimas**
 
-Norėdami patikrinti modelio veikimą su konkrečiu paveikslėliu:
+Norėdami patikrinti modelio veikimą su konkrečiu paveikslėliu (default imamamas test.jpg esantis aplankale):
 
 
 ```bash
