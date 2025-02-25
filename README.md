@@ -17,7 +17,7 @@ https://huggingface.co/spaces/monikutee/money_detection
 - [Aprašymas](#aprašymas)
 - [Duomenų paruošimas](#duomenų-paruošimas)
 - [Duomenų augmentacija](#duomenų-augmentacija)
-- [Duomenų augmentacija](#apmokytas-modelis)
+- [Apmokytas modelis](#apmokytas-modelis)
 - [Diegimo instrukcijos](#diegimo-instrukcijos)
 - [Naudojimo instrukcijos](#naudojimo-instrukcijos)
 - [Iškilusios problemos](#iškilusios-problemos)
