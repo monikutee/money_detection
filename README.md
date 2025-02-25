@@ -17,6 +17,7 @@ https://huggingface.co/spaces/monikutee/money_detection
 - [Aprašymas](#aprašymas)
 - [Duomenų paruošimas](#duomenų-paruošimas)
 - [Duomenų augmentacija](#duomenų-augmentacija)
+- [Duomenų augmentacija](#apmokytas-modelis)
 - [Diegimo instrukcijos](#diegimo-instrukcijos)
 - [Naudojimo instrukcijos](#naudojimo-instrukcijos)
 - [Iškilusios problemos](#iškilusios-problemos)
@@ -58,6 +59,37 @@ Kiekvienam pradiniam paveikslėliui buvo sukurta 3 papildomos versijos, naudojan
 - **Salt and pepper noise:** Triukšmas, paveikslėlio pikseliuose, pritaikytas 0,97% pikselių.
 
 Papildomai kai kurių datasetų kategorijos buvo papildomai anotuojamos, nes pastebėta, kad kai kurių kategorijų trūksta.
+
+## Apmokytas modelis 
+
+### v1
+
+- AP @[ IoU=0.50:0.95 | area=all | maxDets=100 ] = 0.397:
+  
+  Bendra vidutinė tiksliškumo vertė (mAP), skaičiuojama nuo IoU 0.50 iki 0.95, yra 39,7%, kas rodo bendrą modelio aptikimo tikslumą visiems objektų dydžiams.
+
+- AP @[ IoU=0.50 | area=all | maxDets=100 ] = 0.474:
+  
+  Vidutinė tiksliškumo vertė tik prie IoU 0.50 yra 47,4% (PASCAL VOC metrika).
+
+- AP @[ IoU=0.75 | area=all | maxDets=100 ] = 0.461:
+  
+  Esant griežtesnei lokalizacijos reikalavimui (IoU 0.75), tiksliškumas siekia 46,1%.
+
+### v2
+
+- AP @[ IoU=0.50:0.95 | area=all | maxDets=100 ] = 0.469:
+  
+  Tai bendra vidutinė tiksliškumo vertė (mAP), skaičiuojama pagal IoU ribas nuo 0.50 iki 0.95 (su 0.05 žingsniu) visiems objektų dydžiams. Vertė 0.469 reiškia, kad modelio aptikimo kokybė vidutiniškai siekia apie 46,9%.
+
+- AP @[ IoU=0.50 | area=all | maxDets=100 ] = 0.546:
+  
+  Tai vidutinė tiksliškumo vertė tik prie IoU 0.50 (tai vadinama PASCAL VOC metrika). Modelis pasiekia 54,6% tiksliškumą šioje riboje.
+
+- AP @[ IoU=0.75 | area=all | maxDets=100 ] = 0.533:
+  
+  Esant griežtesnei IoU 0.75, AP yra 0.533, kas rodo, kaip modelis veikia reikalaujant tikslesnės lokalizacijos.
+
 
 ## Reikalavimai
 
