@@ -17,6 +17,7 @@ https://huggingface.co/spaces/monikutee/money_detection
 - [Aprašymas](#aprašymas)
 - [Duomenų paruošimas](#duomenų-paruošimas)
 - [Duomenų augmentacija](#duomenų-augmentacija)
+- [Duomenų augmentacija](#apmokytas-modelis)
 - [Diegimo instrukcijos](#diegimo-instrukcijos)
 - [Naudojimo instrukcijos](#naudojimo-instrukcijos)
 - [Iškilusios problemos](#iškilusios-problemos)
@@ -59,6 +60,41 @@ Kiekvienam pradiniam paveikslėliui buvo sukurta 3 papildomos versijos, naudojan
 
 Papildomai kai kurių datasetų kategorijos buvo papildomai anotuojamos, nes pastebėta, kad kai kurių kategorijų trūksta.
 
+## Apmokytas modelis 
+
+### v1
+
+- AP @[ IoU=0.50:0.95 | area=all | maxDets=100 ] = 0.397:
+  
+  Bendra vidutinė tiksliškumo vertė (mAP), skaičiuojama nuo IoU 0.50 iki 0.95, yra 39,7%, kas rodo bendrą modelio aptikimo tikslumą visiems objektų dydžiams.
+
+- AP @[ IoU=0.50 | area=all | maxDets=100 ] = 0.474:
+  
+  Vidutinė tiksliškumo vertė tik prie IoU 0.50 yra 47,4% (PASCAL VOC metrika).
+
+- AP @[ IoU=0.75 | area=all | maxDets=100 ] = 0.461:
+  
+  Esant griežtesnei lokalizacijos reikalavimui (IoU 0.75), tiksliškumas siekia 46,1%.
+
+### v2
+
+- AP @[ IoU=0.50:0.95 | area=all | maxDets=100 ] = 0.469:
+  
+  Tai bendra vidutinė tiksliškumo vertė (mAP), skaičiuojama pagal IoU ribas nuo 0.50 iki 0.95 (su 0.05 žingsniu) visiems objektų dydžiams. Vertė 0.469 reiškia, kad modelio aptikimo kokybė vidutiniškai siekia apie 46,9%.
+
+- AP @[ IoU=0.50 | area=all | maxDets=100 ] = 0.546:
+  
+  Tai vidutinė tiksliškumo vertė tik prie IoU 0.50 (tai vadinama PASCAL VOC metrika). Modelis pasiekia 54,6% tiksliškumą šioje riboje.
+
+- AP @[ IoU=0.75 | area=all | maxDets=100 ] = 0.533:
+  
+  Esant griežtesnei IoU 0.75, AP yra 0.533, kas rodo, kaip modelis veikia reikalaujant tikslesnės lokalizacijos.
+
+
+## Reikalavimai
+
+- Python
+
 ## Diegimo instrukcijos
 
 1. **Suklonuokite repozitoriją:**
@@ -88,29 +124,23 @@ pip install -r requirements.txt
 
 **Rankinis testavimas**
 
-Norėdami patikrinti modelio veikimą su konkrečiu paveikslėliu, paleiskite skriptą su --manual parametru:
+Norėdami patikrinti modelio veikimą su konkrečiu paveikslėliu (default imamamas test.jpg esantis aplankale):
+
 
 ```bash
-python your_script.py --manual path/to/your/test.jpg --output annotated_image.jpg
---manual – nurodo, kad paleidžiamas rankinis testavimas.
---output – kelias, kur bus išsaugotas apdorotas paveikslėlis.
+python money_detection.py --image image.jpg
 ```
+
+Rezultatas: Anotuotas paveiksliukas annotated_image.jpg esantis aplankale
 
 **API naudojimas**
 Paleiskite API serverį:
 
 ```bash
-python your_script.py --host 0.0.0.0 --port 8000
+uvicorn api:app --reload
 ```
 
 Serveris bus pasiekiamas adresu: http://localhost:8000
-
-Paleisti index.html failą ir lokaliai pasinaudoti endpointu:
-
-```bash
-open ./index.html
-```
-
 
 **Endpointas:** /detect
 
@@ -118,6 +148,17 @@ open ./index.html
 
 Apdorotą paveikslėlį kaip JPEG.
 HTTP antraštėse pateiktus aptiktų banknotų (bill_count) ir monetų (coin_count) skaičius.
+
+**Paleisti index.html failą ir lokaliai pasinaudoti endpointu:**
+
+```bash
+open ./index.html
+```
+
+
+**Paleistas modelis serveryje**
+
+https://huggingface.co/spaces/monikutee/money_detection
 
 
 ## Iškilusios problemos
@@ -142,8 +183,9 @@ HTTP antraštėse pateiktus aptiktų banknotų (bill_count) ir monetų (coin_cou
 
 - Pirmą karta modelis buvo mokomas 3h valandas, antrą - 9h, tačiau norimas rezultatas nepasiektas. Reikia daugiau laiko hiperparametrų pasirinkimui, treniravimui ir stebėjimui.
 
-- Buvo bandyta padeploint į render visą api, tačiau nemokamoje versijoje trūksta resursų 'Ran out of memory (used over 512MB) while running your code.'. Dėl to buvo priimtas sprendimas patalpinti į hugging face.
 
+# Kontaktai
+petrulevicmonika@gmail.com
 
 
 
